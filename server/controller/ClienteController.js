@@ -28,6 +28,7 @@ export const getCliente = async (req, res) => {
       where: { id: req.params.id },
     });
     res.json(cliente[0]);
+    //res.status(200).json({message : 'Consulta realiza con exitos'})
   } catch (error) {
     res.json({ message: error.message });
   }
@@ -131,7 +132,7 @@ export const deleteCliente = async (req, res) => {
 // Subir Archivo
 
 export const uploadImg = (req, res) => {
-   res.send("carga de archivo realizo");
+  res.send("carga de archivo realizo");
 };
 
 const storage = multer.diskStorage({
@@ -158,3 +159,34 @@ export const upload = multer({
     cb("Give proper files formate to upload");
   },
 });
+
+//Elimina Imagen
+
+export const ImgDelete = async (req, res) => {
+  const image = req.params.image;
+
+  try {
+    const imgName = image;
+    console.log(imgName);
+    const imagePath = path.resolve(
+      __dirname,
+      "..",
+      "uploads",
+      "clientes",
+      "avata",
+      imgName
+    );
+    await fs.unlink(imagePath, (err) => {
+      if (err) {
+        console.error("Error al eliminar la imagen:", err);
+        res.status(500).json({ error: " Error al Eliminar el Registro" });
+      }
+
+      res.status(200).json({ error: "Imgen Elimanada con Exitos" });
+    });
+   
+
+  } catch (error) {
+    res.status(500).json({ error: " Error al Eliminar el Registro" });
+  }
+};

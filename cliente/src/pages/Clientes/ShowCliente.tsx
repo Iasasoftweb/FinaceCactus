@@ -310,6 +310,15 @@ const CompShowClientes = () => {
 
                           <Link key={item.id} to={`/clientes/edit/${item.id}`}>
                             <CiEdit className="text-primary fs-5" />
+
+                            {isModalpopupOpen && (
+                              <Modalpopup
+                                closeModal={closeModalpopup}
+                                ModoEdicion={modoEdicion}
+                                id={idCliente}
+                                tipo={tipoModal}
+                              />
+                            )}
                           </Link>
                         </td>
                       </tr>

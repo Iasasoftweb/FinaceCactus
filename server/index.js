@@ -25,19 +25,20 @@ app.use("/clientes", ClienteRoute);
 app.use("/tipodocs", TipoDocs);
 
 app.post("/uploadImg/", upload.single("imgDNI2"), async (req, res) => {
-  
-
   if (upload) {
-  res.json({
-    fileName: req.file.filename,
-    filePath: `/uploads/clientes/avata/${req.file.filename}`,
-  });
- }
-
-  
+    res.json({
+      fileName: req.file.filename,
+      filePath: `/uploads/clientes/avata/${req.file.filename}`,
+    });
+  }
 });
 
-app.use("/uploads", express.static(path.join(__dirname, "uploads/clientes/avata/")));
+
+
+app.use(
+  "/uploads",
+  express.static(path.join(__dirname, "uploads/clientes/avata/"))
+);
 // app.use('/public/images/clientes', express.static('./uploads'));
 
 try {

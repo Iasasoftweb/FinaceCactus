@@ -23,6 +23,7 @@ const ClienteForm = ({ ModoEdicion, idCliente }) => {
   const URIs = "http://localhost:8000/tipodocs/";
   const URIs2 = "http://localhost:8000/clientes/";
   const UrisImg = "http://localhost:8000/uploads/";
+  const UrisImgDelete = "http://localhost:8000/clientes/deleteimagen/imagen/";
 
   const navigate = useNavigate();
   const handleBack = () => {
@@ -30,10 +31,18 @@ const ClienteForm = ({ ModoEdicion, idCliente }) => {
   };
 
   const inputFileRef = useRef(null);
+  const delImg = async (img) => {
+    console.log(img);
+    try {
+      await axios.delete(`${UrisImgDelete}${img}`);
+      console.log(" Imagen Elimnada :" + img);
+    } catch (error) {
+      console.error("No se pudo eliminar el archivos");
+    }
+  };
 
   const inputFile = () => {
     inputFileRef.current.click();
-    // uploadImagen();
   };
 
   useEffect(() => {
@@ -58,9 +67,7 @@ const ClienteForm = ({ ModoEdicion, idCliente }) => {
   });
 
   const changeUpFile = (v) => {
-    setFile(v);
-    console.log('paso')
-    uploadImagen(v)
+    uploadImagen(v);
   };
 
   const prevFOTO = (v1) => {};
@@ -69,8 +76,8 @@ const ClienteForm = ({ ModoEdicion, idCliente }) => {
     console.log(originalName);
     setValue("imgFOTOS", originalName);
     prevFOTO(originalName);
-    setImgFileName(originalName); 
-    setPreview(originalName)
+    setImgFileName(originalName);
+    setPreview(originalName);
   };
 
   const formatTelefono = (valor) => {
@@ -118,10 +125,14 @@ const ClienteForm = ({ ModoEdicion, idCliente }) => {
   };
 
   const uploadImagen = async (originalName) => {
-    console.log(originalName)
+    console.log(filet);
+    if (filet) {
+      delImg(filet);
+    }
+
     const formatdata = new FormData();
     formatdata.append("imgDNI2", originalName);
-    
+
     try {
       const res = await axios.post(
         "http://localhost:8000/uploadImg/",
@@ -141,6 +152,7 @@ const ClienteForm = ({ ModoEdicion, idCliente }) => {
         .then((response) => {
           setDataCliente(response.data);
           reset(response.data);
+          setFile(response.data.imgFOTOS);
           setPreview(response.data.imgFOTOS);
         })
         .catch((error) => {
@@ -150,7 +162,6 @@ const ClienteForm = ({ ModoEdicion, idCliente }) => {
   }, [ModoEdicion]);
 
   const onSubmit = async (data: FieldValues) => {
-
     if (ModoEdicion) {
       await axios.put(`http://localhost:8000/clientes/${idCliente}`, data);
 
@@ -195,56 +206,109 @@ const ClienteForm = ({ ModoEdicion, idCliente }) => {
     <div className="p-4 row">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="border-1 border-light-subtle"
+        className="border-1 border-light-subtle m-4"
       >
         <div className="row d-flex justify-content-center p-1">
-          <div className="pt-2 pb-2  col-md-7 mx-2 col-sm-12 ">
+          <div className="pt-2 pb-2  col-md-12 mx-2 col-sm-12 ">
             <div className="row">
-              <div className="col-md-6 col-sm-12 ">
-                <label className="clFont form-label text-start d-block">
-                  Tipo de DNI{" "}
-                </label>
-                <select
-                  className="clFont form-select"
-                  {...register("tipo_dni")}
-                >
-                  {tipoDocs.map((item) => (
-                    <option
-                      value={item.id}
-                      className="clFont"
-                      key={item.id}
-                      selected
-                    >
-                      {item.tipodoc}
-                    </option>
-                  ))}
-                </select>
-              </div>
+              <div className="row">
+                <div className="col-md-4 col-sm-12">
+                  <div className="d-flex justify-content-center">
+                    {preview ? (
+                      <Avatar
+                        src={`${UrisImg}${preview}`}
+                        sx={{ width: 100, height: 100 }}
+                      />
+                    ) : (
+                      <Avatar
+                        src={`${preview}`}
+                        sx={{ width: 100, height: 100 }}
+                      />
+                    )}
+                  </div>
 
-              <div className="col-md-6 col-sm-12">
-                <label className="clFont form-label text-start d-block">
-                  Documento DNI
-                </label>
-                <input
-                  {...register("dni", {
-                    required: "Este campo es obligatorio",
-                    minLength: {
-                      value: 13,
-                      message: "El DNI no debe tener menos 13 caracateres",
-                    },
-                    maxLength: {
-                      value: 13,
-                      message: "El DNI no debe tener mas de 13 caracteres",
-                    },
-                  })}
-                  onChange={handleDNIChange}
-                  type="text"
-                  className="clFont form-control"
-                  placeholder="000-0000000-0"
-                />
-                {errors.dni && (
-                  <p className="text-red-500 clFont"> {errors.dni.message} </p>
-                )}
+                  <input
+                    type="file"
+                    className="clFont form-control"
+                    onChange={(e) => {
+                      setValue("imgDNI2", e.target.files[0].name);
+                      changeUpFile(e.target.files[0]);
+                      setImgFileName(e.target.files[0]);
+                    }}
+                    ref={inputFileRef}
+                    style={{ display: "none" }}
+                    accept=".jpg, .jpeg, .png"
+                  />
+                  <input
+                    type="text"
+                    {...register("imgFOTOS")}
+                    readOnly
+                    className="clFont form-control"
+                    style={{ display: !preview ? "none" : "none" }}
+                  />
+
+                  <div className="d-flex justify-content-center mt-2">
+                    <button
+                      className="btn btn-success clFont text-white"
+                      onClick={inputFile}
+                      type="button"
+                    >
+                      Cargar Imagen
+                    </button>
+                  </div>
+                </div>
+
+                <div className="col-md-8 col-sm-12">
+                  <div className="col-md-6 col-sm-12 ">
+                    <label className="clFont form-label text-start d-block">
+                      Tipo de DNI{" "}
+                    </label>
+                    <select
+                      className="clFont form-select"
+                      {...register("tipo_dni")}
+                    >
+                      {tipoDocs.map((item) => (
+                        <option
+                          value={item.id}
+                          className="clFont"
+                          key={item.id}
+                          selected
+                        >
+                          {item.tipodoc}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className="col-md-6 col-sm-12">
+                    <label className="clFont form-label text-start d-block">
+                      Documento DNI
+                    </label>
+                    <input
+                      {...register("dni", {
+                        required: "Este campo es obligatorio",
+                        minLength: {
+                          value: 13,
+                          message: "El DNI no debe tener menos 13 caracateres",
+                        },
+                        maxLength: {
+                          value: 13,
+                          message: "El DNI no debe tener mas de 13 caracteres",
+                        },
+                      })}
+                      onChange={handleDNIChange}
+                      type="text"
+                      className="clFont form-control"
+                      placeholder="000-0000000-0"
+                    />
+                    {errors.dni && (
+                      <p className="text-red-500 clFont">
+                        {" "}
+                        {errors.dni.message}{" "}
+                      </p>
+                    )}
+                  </div>
+                </div>
               </div>
             </div>
             <br />
@@ -581,63 +645,10 @@ const ClienteForm = ({ ModoEdicion, idCliente }) => {
             </div>
           </div>
 
-          <div className="col-md-4 col-sm-12 rounded-4 p-2">
-            <p className="clFont d-block text-start lh-0 m-auto">
-              Imagen de Cliente{" "}
-            </p>
-
-            <div className=" border-1 border-dark-subtle p-2 m-2 rounded-3 d-flex justify-content-center">
-              <div className="">
-                <Avatar
-                  src={`${UrisImg}${preview}`}
-                  sx={{ width: 100, height: 100 }}
-                />
-              </div>
-            </div>
-
-            <input
-              type="file"
-              className="clFont form-control"
-              onChange={(e) => {
-                setValue("imgDNI2", e.target.files[0].name);
-                changeUpFile(e.target.files[0]);
-                setImgFileName(e.target.files[0])
-              }}
-              ref={inputFileRef}
-              style={{ display: "none" }}
-              accept=".jpg, .jpeg, .png"
-            />
-            <input
-              type="text"
-              {...register("imgFOTOS")}
-              readOnly
-              className="clFont form-control"
-            />
-
-            <div className="d-flex justify-content-center mt-2">
-              <button
-                className="btn btn-success clFont text-white"
-                onClick={inputFile}
-                type="button"
-              >
-                Cargar Imagen
-              </button>
-            </div>
-          </div>
+          
         </div>
 
-        {/* <div className="row d-flex align-content-between">
-                <div className="col-md-6 col-sm-12">
-                  <div className=" border-1 border-dark-subtle hl-100 h-100 p-2 m-2 rounded-3">
-                    <IoImageOutline className="fs-1 text-black-50" />
-                  </div>
-                </div>
-                <div className="col-md-6 col-sm-12">
-                  <div className=" border-1 border-dark-subtle hl-100 h-100 p-2 m-2 rounded-3">
-                    <IoImageOutline className="fs-1 text-black-50" />
-                  </div>
-                </div>
-              </div> */}
+       
 
         <div className="row">
           <div className=" d-flex justify-content-end p-2">
