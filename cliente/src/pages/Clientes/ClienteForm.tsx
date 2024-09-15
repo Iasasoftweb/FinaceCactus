@@ -150,6 +150,7 @@ const ClienteForm = ({ ModoEdicion, idCliente }) => {
   }, [ModoEdicion]);
 
   const onSubmit = async (data: FieldValues) => {
+
     if (ModoEdicion) {
       await axios.put(`http://localhost:8000/clientes/${idCliente}`, data);
 
