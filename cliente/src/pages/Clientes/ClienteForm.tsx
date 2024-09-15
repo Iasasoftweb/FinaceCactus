@@ -203,200 +203,206 @@ const ClienteForm = ({ ModoEdicion, idCliente }) => {
   };
 
   return (
-    <div className="p-4 row">
+    <div className="row p-2">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="border-1 border-light-subtle m-4"
+        className="border-1 border-light-subtle "
       >
         <div className="row d-flex justify-content-center p-1">
           <div className="pt-2 pb-2  col-md-12 mx-2 col-sm-12 ">
             <div className="row">
-              <div className="row">
-                <div className="col-md-4 col-sm-12">
-                  <div className="d-flex justify-content-center">
-                    {preview ? (
-                      <Avatar
-                        src={`${UrisImg}${preview}`}
-                        sx={{ width: 100, height: 100 }}
-                      />
-                    ) : (
-                      <Avatar
-                        src={`${preview}`}
-                        sx={{ width: 100, height: 100 }}
-                      />
-                    )}
-                  </div>
+              <div className="col-md-3 col-sm-12">
+                <div className="d-flex justify-content-center ">
+                  {preview ? (
+                    <Avatar
+                      src={`${UrisImg}${preview}`}
+                      sx={{ width: 100, height: 100 }}
+                    />
+                  ) : (
+                    <Avatar
+                      src={`${preview}`}
+                      sx={{ width: 100, height: 100 }}
+                    />
+                  )}
+                </div>
 
-                  <input
-                    type="file"
-                    className="clFont form-control"
-                    onChange={(e) => {
-                      setValue("imgDNI2", e.target.files[0].name);
-                      changeUpFile(e.target.files[0]);
-                      setImgFileName(e.target.files[0]);
-                    }}
-                    ref={inputFileRef}
-                    style={{ display: "none" }}
-                    accept=".jpg, .jpeg, .png"
-                  />
+                <input
+                  type="file"
+                  className="clFont form-control"
+                  onChange={(e) => {
+                    setValue("imgDNI2", e.target.files[0].name);
+                    changeUpFile(e.target.files[0]);
+                    setImgFileName(e.target.files[0]);
+                  }}
+                  ref={inputFileRef}
+                  style={{ display: "none" }}
+                  accept=".jpg, .jpeg, .png"
+                />
+                <input
+                  type="text"
+                  {...register("imgFOTOS")}
+                  readOnly
+                  className="clFont form-control"
+                  style={{ display: !preview ? "none" : "none" }}
+                />
+
+                <div className="d-flex justify-content-center mt-2">
+                  <button
+                    className="btn btn-success clFont text-white"
+                    onClick={inputFile}
+                    type="button"
+                  >
+                    Cargar Imagen
+                  </button>
+                </div>
+              </div>
+
+              <div className="col-md-3 col-sm-12 p-4">
+                <div className="row ">
+                  <label className="clFont label-control text-start d-block">
+                    Tipo de DNI *{" "}
+                  </label>
+                  <select
+                    className="clFont form-select"
+                    {...register("tipo_dni")}
+                  >
+                    {tipoDocs.map((item) => (
+                      <option
+                        value={item.id}
+                        className="clFont"
+                        key={item.id}
+                        selected
+                      >
+                        {item.tipodoc}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <br />
+
+                <div className=" row">
+                  <label
+                    htmlFor=""
+                    className="label-control clFont text-start d-block"
+                  >
+                    {" "}
+                    Apellido de Cliente *
+                  </label>
                   <input
                     type="text"
-                    {...register("imgFOTOS")}
-                    readOnly
-                    className="clFont form-control"
-                    style={{ display: !preview ? "none" : "none" }}
+                    className="form-control clFont"
+                    {...register("apellidos", {
+                      required: "Este campo es obligatorio",
+                    })}
+                    onChange={handleInputChange}
                   />
-
-                  <div className="d-flex justify-content-center mt-2">
-                    <button
-                      className="btn btn-success clFont text-white"
-                      onClick={inputFile}
-                      type="button"
-                    >
-                      Cargar Imagen
-                    </button>
-                  </div>
+                  {errors.apellidos && (
+                    <p className="text-red-500 clFont">
+                      {" "}
+                      {errors.apellidos.message}{" "}
+                    </p>
+                  )}
                 </div>
+              </div>
 
-                <div className="col-md-8 col-sm-12">
-                  <div className="col-md-6 col-sm-12 ">
-                    <label className="clFont form-label text-start d-block">
-                      Tipo de DNI{" "}
-                    </label>
-                    <select
-                      className="clFont form-select"
-                      {...register("tipo_dni")}
-                    >
-                      {tipoDocs.map((item) => (
-                        <option
-                          value={item.id}
-                          className="clFont"
-                          key={item.id}
-                          selected
-                        >
-                          {item.tipodoc}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
+              <div className="col-md-3 col-sm-12 p-4">
+                <div className="row">
+                  <label className="clFont label-control text-start d-block">
+                    Documento DNI *
+                  </label>
+                  <input
+                    {...register("dni", {
+                      required: "Este campo es obligatorio",
+                      minLength: {
+                        value: 13,
+                        message: "El DNI no debe tener menos 13 caracateres",
+                      },
+                      maxLength: {
+                        value: 13,
+                        message: "El DNI no debe tener mas de 13 caracteres",
+                      },
+                    })}
+                    onChange={handleDNIChange}
+                    type="text"
+                    className="clFont form-control"
+                    placeholder="000-0000000-0"
+                  />
+                  {errors.dni && (
+                    <p className="text-red-500 clFont">
+                      {" "}
+                      {errors.dni.message}{" "}
+                    </p>
+                  )}
+                </div>
+                <br />
+                <div className="row">
+                  <label
+                    htmlFor=""
+                    className="label-control clFont text-start d-block"
+                  >
+                    Apodo
+                  </label>
+                  <input
+                    type="text"
+                    className="clFont form-control"
+                    {...register("apodo")}
+                    onChange={handleInputChange}
+                  />
+                </div>
+              </div>
 
-                  <div className="col-md-6 col-sm-12">
-                    <label className="clFont form-label text-start d-block">
-                      Documento DNI
-                    </label>
-                    <input
-                      {...register("dni", {
-                        required: "Este campo es obligatorio",
-                        minLength: {
-                          value: 13,
-                          message: "El DNI no debe tener menos 13 caracateres",
-                        },
-                        maxLength: {
-                          value: 13,
-                          message: "El DNI no debe tener mas de 13 caracteres",
-                        },
-                      })}
-                      onChange={handleDNIChange}
-                      type="text"
-                      className="clFont form-control"
-                      placeholder="000-0000000-0"
-                    />
-                    {errors.dni && (
-                      <p className="text-red-500 clFont">
-                        {" "}
-                        {errors.dni.message}{" "}
-                      </p>
-                    )}
-                  </div>
+              <div className="col-md-3 col-sm-12 p-4">
+                <div className="row">
+                  <label
+                    htmlFor=""
+                    className="label-control clFont text-start d-block"
+                  >
+                    {" "}
+                    Nombre de Cliente *
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control clFont"
+                    {...register("nombres", {
+                      required: "Este campo es obligatorio",
+                    })}
+                    onChange={handleInputChange}
+                  />
+                  {errors.nombres && (
+                    <p className="text-red-500 clFont">
+                      {" "}
+                      {errors.nombres.message}{" "}
+                    </p>
+                  )}
+                </div>
+                <br />
+                <div className="row">
+                  <label
+                    htmlFor=""
+                    className="label-control clFont text-start d-block"
+                  >
+                    Sexo
+                  </label>
+                  <select
+                    id=""
+                    className="form-select clFont"
+                    {...register("sexo")}
+                  >
+                    <option value="M" selected>
+                      Masculino
+                    </option>
+                    <option value="F">Femenino</option>
+                  </select>
                 </div>
               </div>
             </div>
-            <br />
-            <div className="row">
-              <div className="col-md-6 col-sm-12">
-                <label
-                  htmlFor=""
-                  className="label-control clFont text-start d-block"
-                >
-                  {" "}
-                  Nombre de Cliente
-                </label>
-                <input
-                  type="text"
-                  className="form-control clFont"
-                  {...register("nombres", {
-                    required: "Este campo es obligatorio",
-                  })}
-                  onChange={handleInputChange}
-                />
-                {errors.nombres && (
-                  <p className="text-red-500 clFont">
-                    {" "}
-                    {errors.nombres.message}{" "}
-                  </p>
-                )}
-              </div>
-              <div className="col-md-6 col-sm-12">
-                <label
-                  htmlFor=""
-                  className="label-control clFont text-start d-block"
-                >
-                  {" "}
-                  Apellido de Cliente
-                </label>
-                <input
-                  type="text"
-                  className="form-control clFont"
-                  {...register("apellidos", {
-                    required: "Este campo es obligatorio",
-                  })}
-                  onChange={handleInputChange}
-                />
-                {errors.apellidos && (
-                  <p className="text-red-500 clFont">
-                    {" "}
-                    {errors.apellidos.message}{" "}
-                  </p>
-                )}
-              </div>
-            </div>
-            <br />
-            <div className="row">
-              <div className="col-md-4 col-sm-12">
-                <label
-                  htmlFor=""
-                  className="label-control clFont text-start d-block"
-                >
-                  Apodo
-                </label>
-                <input
-                  type="text"
-                  className="clFont form-control"
-                  {...register("apodo")}
-                  onChange={handleInputChange}
-                />
-              </div>
-              <div className="col-md-4 col-sm-12">
-                <label
-                  htmlFor=""
-                  className="label-control clFont text-start d-block"
-                >
-                  Sexo
-                </label>
-                <select
-                  id=""
-                  className="form-select clFont"
-                  {...register("sexo")}
-                >
-                  <option value="M" selected>
-                    Masculino
-                  </option>
-                  <option value="F">Femenino</option>
-                </select>
-              </div>
 
-              <div className="col-md-4 col-sm-12">
-                <label htmlFor="" className="clFont text-start d-block">
+            <div className="row">
+              <div className="col-md-2 col-sm-12 p-2">
+                <label
+                  htmlFor=""
+                  className="clFont label-control text-start d-block"
+                >
                   {" "}
                   Fecha Nacimiento
                 </label>
@@ -406,11 +412,8 @@ const ClienteForm = ({ ModoEdicion, idCliente }) => {
                   {...register("fecha_nac")}
                 />
               </div>
-            </div>
-            <br />
 
-            <div className="row">
-              <div className="col-md-4 col-sm-2">
+              <div className="col-md-2 col-sm-12 p-2">
                 <label
                   htmlFor=""
                   className="clFont text-start d-block label-control"
@@ -430,7 +433,7 @@ const ClienteForm = ({ ModoEdicion, idCliente }) => {
                   <option value="UNION LIBRE">Unión Libre</option>
                 </select>
               </div>
-              <div className="col-md-4 col-sm-12">
+              <div className="col-md-2 col-sm-12 p-2">
                 <label
                   htmlFor=""
                   className="label-control clFont text-start d-block"
@@ -449,7 +452,8 @@ const ClienteForm = ({ ModoEdicion, idCliente }) => {
                   ))}
                 </select>
               </div>
-              <div className="col-md-4 col-sm-12">
+
+              <div className="col-md-2 col-sm-12 p-2">
                 <label
                   htmlFor=""
                   className="clFont text-start d-block label-control"
@@ -469,11 +473,7 @@ const ClienteForm = ({ ModoEdicion, idCliente }) => {
                   ))}
                 </select>
               </div>
-            </div>
-
-            <br />
-            <div className="row">
-              <div className="col-md-4 col-sm-12">
+              <div className="col-md-2 col-sm-12 p-2">
                 <label
                   htmlFor=""
                   className="clFont text-start d-block label-control"
@@ -493,7 +493,7 @@ const ClienteForm = ({ ModoEdicion, idCliente }) => {
                   </option>
                 </select>
               </div>
-              <div className="col-md-4 col-sm-12">
+              <div className="col-md-2 col-sm-12 p-2">
                 <label
                   htmlFor=""
                   className="clFont label-control text-start d-block"
@@ -508,7 +508,10 @@ const ClienteForm = ({ ModoEdicion, idCliente }) => {
                   onChange={handleInputChange}
                 />
               </div>
-              <div className="col-md-4 col-sm-12">
+            </div>
+
+            <div className="row">
+              <div className="col-md-2 col-sm-12">
                 <label
                   htmlFor=""
                   className="clFont text-start d-block label-control"
@@ -522,6 +525,11 @@ const ClienteForm = ({ ModoEdicion, idCliente }) => {
                   {...register("fechaingresotrabajo")}
                 />
               </div>
+
+              <div className="col-md-2 col-sm-12">
+                
+              </div>
+              <div className="col-md-4 col-sm-12"></div>
             </div>
             <br />
             <div className="row">
@@ -644,11 +652,7 @@ const ClienteForm = ({ ModoEdicion, idCliente }) => {
               </div>
             </div>
           </div>
-
-          
         </div>
-
-       
 
         <div className="row">
           <div className=" d-flex justify-content-end p-2">
