@@ -71,7 +71,7 @@ const CompShowClientes = () => {
       console.error("Error de Coneccion", error);
     }
   };
-  // const urlImg = `http://localhost:5173/uploads/${item.imgFOTOS}`
+  
   useEffect(() => {
     datosCliente();
   }, []);

@@ -5,6 +5,7 @@ import cors from "cors";
 import db from "./database/db.js";
 import ClienteRoute from "./routes/routes.js";
 import TipoDocs from "./routes/routeTipodocs.js";
+import Zonas from "./routes/routeszonas.js"
 import path, { extname } from "path";
 import multer from "multer";
 import { dirname } from "path";
@@ -21,8 +22,11 @@ app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(express.json());
+
 app.use("/clientes", ClienteRoute);
 app.use("/tipodocs", TipoDocs);
+app.use("/zonas", Zonas);
+
 
 app.post("/uploadImg/", upload.single("imgDNI2"), async (req, res) => {
   if (upload) {

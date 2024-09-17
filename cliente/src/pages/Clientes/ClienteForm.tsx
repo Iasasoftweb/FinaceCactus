@@ -509,7 +509,7 @@ const ClienteForm = ({ ModoEdicion, idCliente }) => {
                 />
               </div>
             </div>
-
+<br />
             <div className="row">
               <div className="col-md-2 col-sm-12">
                 <label
@@ -527,7 +527,7 @@ const ClienteForm = ({ ModoEdicion, idCliente }) => {
               </div>
 
               <div className="col-md-2 col-sm-12">
-                
+
               </div>
               <div className="col-md-4 col-sm-12"></div>
             </div>

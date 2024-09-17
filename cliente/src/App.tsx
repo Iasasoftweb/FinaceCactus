@@ -10,6 +10,7 @@ import "../src/pages/Dashboard/Dashboard.css";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import EditCliente from "./pages/Clientes/EditCliente";
 import CreateCliente from "./pages/Clientes/CreateCliente";
+import Showrutas from "./pages/Rutas/Showrutas";
 
 function App() {
   const [openSidebarToggle, setOpenSidebarToggle] = useState(false);
@@ -34,6 +35,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/clientes/edit/:id" element= {<EditCliente />} /> 
             <Route path="/clientes/create/" element= {<CreateCliente />} /> 
+            <Route path="/rutas" element = {<Showrutas />}/>
 
           </Routes>
         </div>
