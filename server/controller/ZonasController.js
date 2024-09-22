@@ -38,20 +38,21 @@ export const updateZonas = async (req, res) => {
 
 export const createZonas = async (req, res) => {
   try {
-    await ZonasModels.create(res.body);
-    req.json({ message: "!Registro Creado Correctamente" });
+    await ZonasModels.create(req.body);
+    res.json({ message: "!Registro Creado Correctamente" });
   } catch (error) {
-    req.json({ message: error.message });
+    res.json({ message: error.message });
   }
 };
 
 export const deleteZonas = async (req, res) => {
   try {
-    await ZonasModels.destroy(req.body, {
-      where: { id: res.params.id },
+    await ZonasModels.destroy({
+      where: { id: req.params.id },
     });
-    res.status(200).json({ message: "!!Registro eliminados correctamente" });
+    res.status(200)
+       .json({ message: "!!Registro eliminados correctamente" });
   } catch (error) {
-    req.json({ message: error.message });
+    res.json({ message: error.message });
   }
 };

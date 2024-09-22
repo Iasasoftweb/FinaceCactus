@@ -17,7 +17,7 @@ const Modalpopup = ({ closeModal, ModoEdicion, id, tipo }) => {
   const handleImage = (e) => {
     setImage(e.target.files[0]);
   };
-  console.log(ModoEdicion)
+ 
   const {
     register,
     handleSubmit,

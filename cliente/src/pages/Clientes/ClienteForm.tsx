@@ -8,12 +8,10 @@ import { MdOutlineSaveAlt } from "react-icons/md";
 import { MdOutlineCancel } from "react-icons/md";
 import type { FieldValues } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { IoImageOutline } from "react-icons/io5";
-import ProfilePicture from "../../components/ProfilePicture/ProfilePicture";
 import { Avatar } from "@mui/material";
-import styled from "styled-components";
 
 const ClienteForm = ({ ModoEdicion, idCliente }) => {
+ 
   const [dataCliente, setDataCliente] = useState([]);
   const [tipoDocs, setTipoDocs] = useState([]);
   const [filet, setFile] = useState("");
@@ -32,7 +30,7 @@ const ClienteForm = ({ ModoEdicion, idCliente }) => {
 
   const inputFileRef = useRef(null);
   const delImg = async (img) => {
-    console.log(img);
+    
     try {
       await axios.delete(`${UrisImgDelete}${img}`);
       console.log(" Imagen Elimnada :" + img);
@@ -151,7 +149,7 @@ const ClienteForm = ({ ModoEdicion, idCliente }) => {
         .get(`http://localhost:8000/clientes/${idCliente}`)
         .then((response) => {
           setDataCliente(response.data);
-          reset(response.data);
+           reset(response.data);
           setFile(response.data.imgFOTOS);
           setPreview(response.data.imgFOTOS);
         })
@@ -160,7 +158,7 @@ const ClienteForm = ({ ModoEdicion, idCliente }) => {
         });
     }
   }, [ModoEdicion]);
-
+ 
   const onSubmit = async (data: FieldValues) => {
     if (ModoEdicion) {
       await axios.put(`http://localhost:8000/clientes/${idCliente}`, data);
@@ -281,6 +279,7 @@ const ClienteForm = ({ ModoEdicion, idCliente }) => {
                 <br />
 
                 <div className=" row">
+                  
                   <label
                     htmlFor=""
                     className="label-control clFont text-start d-block"

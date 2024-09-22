@@ -36,8 +36,8 @@ const ClientesModel = db.define("tclientes", {
   imgDNI1: { type: DataTypes.STRING},
   imgDNI2: { type: DataTypes.STRING },
   imgFOTOS: { type: DataTypes.STRING },
-  createdAt: { type: DataTypes.DATE, timestamps: false },
-  updatedAt: { type: DataTypes.DATE, timestamps: false },
+  createdAt: { type: DataTypes.DATE, timestamps: false, defaultValue: DataTypes.NOW },
+  updatedAt: { type: DataTypes.DATE, timestamps: false, defaultValue: DataTypes.NOW },
 });
 
 

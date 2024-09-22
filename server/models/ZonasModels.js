@@ -7,8 +7,10 @@ const ZonasModels = db.define("tbzonas", {
     primaryKey: true,
     autoIncrement: true,
   },
-  zonas: { type: DataTypes.STRING },
-  estado: { type: DataTypes.INTEGER, defaultValue: "HABILITADO" },
+  nombrerutas: { type: DataTypes.STRING },
+  estado: { type: DataTypes.INTEGER, defaultValue: 1 },
+  createdAt: { type: DataTypes.DATE, timestamps: false, defaultValue: DataTypes.NOW },
+  updatedAt: { type: DataTypes.DATE, timestamps: false, defaultValue: DataTypes.NOW },
 });
 
 export default ZonasModels;

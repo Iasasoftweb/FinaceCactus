@@ -34,7 +34,7 @@ const CompShowClientes = () => {
   const [totalItems, setTotalItems] = useState(0);
   const [tipoModal, setTipoModal] = useState(true);
 
-  const PER_PAGE = 8;
+  const PER_PAGE = 8; 
   const countpage = Math.ceil(clienteDatos.length / PER_PAGE);
   const _DATA = PaginationItem(clients, PER_PAGE);
 
@@ -71,7 +71,7 @@ const CompShowClientes = () => {
       console.error("Error de Coneccion", error);
     }
   };
-  
+
   useEffect(() => {
     datosCliente();
   }, []);
@@ -79,6 +79,7 @@ const CompShowClientes = () => {
   const searcher = (e) => {
     setSearch(e.target.value);
     filtrar(e.target.value);
+    
   };
 
   const ShowClients = () => {

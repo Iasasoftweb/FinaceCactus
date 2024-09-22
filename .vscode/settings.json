@@ -1,0 +1,9 @@
+{
+  "workbench.colorTheme": "Default Dark+",
+  "editor.bracketPairColorization.enabled": true,
+  "editor.colorDecorators": true,
+  "editor.bracketPairColorization.independentColorPoolPerBracketType": true,
+  "editor.defaultColorDecorators": false,
+  "editor.autoClosingComments": "always",
+  "editor.comments.ignoreEmptyLines": false
+}
